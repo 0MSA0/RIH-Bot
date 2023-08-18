@@ -23,5 +23,5 @@ class GameSelect(commands.Cog):
         self.gamelist: list[str] = read_json()
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await bot.add_cog(GameSelect(bot))

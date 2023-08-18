@@ -1,7 +1,6 @@
 import json
-from typing import Optional
-
 import requests
+from typing import Optional
 from discord.ext import commands
 
 
@@ -74,5 +73,5 @@ class ETC(commands.Cog):
         await ctx.send("Cullently no workin sowwy UwU")
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await bot.add_cog(ETC(bot))

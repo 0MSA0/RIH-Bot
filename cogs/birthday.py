@@ -1,8 +1,7 @@
-from typing import Optional
-
 import discord
 import datetime
 import json
+from typing import Optional
 from discord.ext import commands, tasks
 from random import choice
 from config import BD_CHANNEL_ID, GUILD_ID
@@ -19,7 +18,7 @@ def get_position_of_sharp(text: str) -> int:
 
 def read_json() -> dict:
     """
-        Reads JSON file and saves everything into a dictionary
+    Reads JSON file and saves everything into a dictionary
     """
     with open(JSON_FILE, 'r', encoding='utf-8') as f:
         calendar = json.load(f)
@@ -136,8 +135,8 @@ class Birthday(commands.Cog):
     @commands.command()
     async def listbd(self, ctx):
         """
-            Lists and prints out all birthdays stored in the database
-            """
+        Lists and prints out all birthdays stored in the database
+        """
         output = ""
         for pair in self.calendar.items():
             if pair[1] != ['']:
@@ -148,5 +147,5 @@ class Birthday(commands.Cog):
         await ctx.send(output)
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await bot.add_cog(Birthday(bot))
