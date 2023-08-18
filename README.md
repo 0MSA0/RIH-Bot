@@ -1,5 +1,5 @@
 # RIH-Bot
-A Discord bot which can writes a message when it is someones birthday.
+A Discord bot which writes a message when it is someones birthday.
 Later shall be able to have "guess who said this" game and be able to select a game to play for a group.
 
 
