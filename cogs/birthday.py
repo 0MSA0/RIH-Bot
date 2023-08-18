@@ -142,8 +142,6 @@ class Birthday(commands.Cog):
             if pair[1] != ['']:
                 for value in pair[1]:
                     output += "%s: %s\n" % (pair[0], value)
-            else:
-                continue
         await ctx.send(output)
 
 
