@@ -26,8 +26,8 @@ def get_joke(typ: Optional[str]) -> str:
 
 
 class ETC(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self, bot: commands.Bot):
+        self.bot: commands.Bot = bot
 
     @commands.Cog.listener()
     async def on_ready(self):

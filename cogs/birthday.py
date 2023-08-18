@@ -28,10 +28,10 @@ def read_json() -> dict:
 
 
 class Birthday(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-        self.bd_channel_id = BD_CHANNEL_ID
-        self.calendar = read_json()
+    def __init__(self, bot: commands.Bot):
+        self.bot:commands.Bot = bot
+        self.bd_channel_id:int = BD_CHANNEL_ID
+        self.calendar:dict = read_json()
         self.bd_check_task.start()
 
     def add_to_json(self):
