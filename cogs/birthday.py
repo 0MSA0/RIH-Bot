@@ -6,7 +6,7 @@ from discord.ext import commands, tasks
 from random import choice
 from config import BD_CHANNEL_ID, GUILD_ID
 
-JSON_FILE = "calendar.json"
+JSON_FILE = "./data/calendar.json"
 
 
 def get_position_of_sharp(text: str) -> int:

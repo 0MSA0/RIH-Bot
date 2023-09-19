@@ -20,7 +20,7 @@ logger.addHandler(handler)
 
 # Bot setup
 
-description = '"BirthdayBot in Python"'
+description = '"Bot straight outa hell"'
 intents = discord.Intents().all()
 bot = commands.Bot(command_prefix=commands.when_mentioned_or('!'),
                    description=description,

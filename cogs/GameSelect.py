@@ -4,7 +4,7 @@ import json
 from discord.ext import commands
 
 # TODO: Use a database
-JSON_FILE = "gamelist.json"
+JSON_FILE = "./data/gamelist.json"
 
 
 def read_json() -> list[str]:
