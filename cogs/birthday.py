@@ -41,7 +41,7 @@ class Birthday(commands.Cog):
             json.dump(self.calendar, jf, indent=2)
 
 
-    @tasks.loop(time=datetime.time.min)
+    @tasks.loop(hours=24)
     async def bd_check_task(self):
         await self.bot.wait_until_ready()
         # Get channel & server
