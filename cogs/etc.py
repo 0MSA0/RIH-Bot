@@ -8,13 +8,13 @@ def get_joke(typ: Optional[str]) -> str:
     """
     Gets a random joke from a API
     """
-    if (typ is None):
+    if typ is None:
         response = requests.get("https://jokes-and-quotes-api.herokuapp.com/jokes/random")
-    elif (typ == "general"):
+    elif typ == "general":
         response = requests.get("https://jokes-and-quotes-api.herokuapp.com/jokes/general/random")
-    elif (typ == "programming"):
+    elif typ == "programming":
         response = requests.get("https://jokes-and-quotes-api.herokuapp.com/jokes/programming/random")
-    elif (typ == "knock-knock"):
+    elif typ == "knock-knock":
         response = requests.get("https://jokes-and-quotes-api.herokuapp.com/jokes/knock-knock/random")
     else:
         response = requests.get("https://jokes-and-quotes-api.herokuapp.com/jokes/random")

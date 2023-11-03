@@ -28,9 +28,9 @@ def read_json() -> dict:
 
 class Birthday(commands.Cog):
     def __init__(self, bot: commands.Bot):
-        self.bot:commands.Bot = bot
-        self.bd_channel_id:int = BD_CHANNEL_ID
-        self.calendar:dict = read_json()
+        self.bot: commands.Bot = bot
+        self.bd_channel_id: int = BD_CHANNEL_ID
+        self.calendar: dict = read_json()
         self.bd_check_task.start()
 
     def add_to_json(self):
@@ -39,7 +39,6 @@ class Birthday(commands.Cog):
         """
         with open(JSON_FILE, 'w', encoding='UTF8') as jf:
             json.dump(self.calendar, jf, indent=2)
-
 
     @tasks.loop(hours=24)
     async def bd_check_task(self):
@@ -70,15 +69,15 @@ class Birthday(commands.Cog):
                     personname = person[:sharp]
                     persondiscriminator = person[sharp + 1:]
                     user_id = discord.utils.get(self.bot.get_all_members(),
-                                                                name=personname,
-                                                                discriminator=persondiscriminator)
+                                                name=personname,
+                                                discriminator=persondiscriminator)
                 else:
                     # new naming system
                     user_id = server.get_member_named(person)
-                if (person == "doribumi"):
-                    bdtext += "%s lemao congrats lelul\n" % (user_id.mention)
+                if person == "doribumi":
+                    bdtext += "%s lemao congrats lelul\n" % user_id.mention
                 else:
-                    bdtext += "Happy Birthday %s. @everyone" % (user_id.mention)
+                    bdtext += "Happy Birthday %s. @everyone" % user_id.mention
                     bdtext += ":partying_face: :partying_face: \n"
             await message_channel.send(bdtext)
 
@@ -89,10 +88,10 @@ class Birthday(commands.Cog):
         Usage: !add Muster 01.01
         Zeroes must be written out!
         """
-        if (username is None or date is None):
+        if username is None or date is None:
             output_str = "Failed to add person. Usage: `!add Muster 01.01`"
         else:
-            if (len(date) != 5 or len(username) == 0 or date[2] != '.'):
+            if len(date) != 5 or len(username) == 0 or date[2] != '.':
                 output_str = "Failed to add person. Usage: `!add Muster 01.01`"
             else:
                 try:
