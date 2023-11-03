@@ -1,16 +1,17 @@
 # RIH-Bot
-A Discord bot which writes a message when it is someones birthday.
-Later shall be able to have "guess who said this" game and be able to select a game to play for a group.
+Ein Discord Bot, der zum Geburtstag gratuliert.  
+Soll später auch ein Spiel für die Gruppe zum Spielen aussuchen.
+Außerdem noch das "Wer hat das gesagt?" Minispiel mit Zitaten aus der Wand der Schande.
 
-
-## TODO GameSelect
-Also eigentlich nur eine lösung für das problem das wir uns für kein spiel entscheiden können
-### Ganz einfach:
-> Eine vorgespeicherte list an games die zur verfügung stehen, und ein zufallsgenerator der einen ausspuckt
-
-### Bisschen mehr:
-> Vetos für games auf die man garkein bock hat
-
-### Noch bisschen mehr:
-> Abgleich wer alles mitspielen will und wer welche games hat, so das falls samuel mitmachen will automatisch ow rauskommt (auf korrekt)
+## TODO
+### Einfach
+- SQLite DB benutzen anstatt JSON Dateien
+- Restliche Zitate in DB machen (2022 & 2023)
+- Kommand für Zitat hinzufügen implementieren. Vielleicht nur als Owner nutzbar.
+### Moderat:
+- "Vetos für games auf die man garkein bock hat"
+- Rewrite in Rust Serenity
+### Schwer:
+- Fancy UI für GameSelect
+- "Abgleich wer alles mitspielen will und wer welche games hat, so das falls samuel mitmachen will automatisch ow rauskommt (auf korrekt)"
 
