@@ -34,23 +34,23 @@ class ETC(commands.Cog):
 
     @commands.command(aliases=["sh"])
     @commands.is_owner()
-    async def shutdown(self, ctx):
+    async def shutdown(self, ctx: commands.Context):
         print("Bot shutting down...")
         await self.bot.close()
 
     @commands.command()
-    async def hello(self, ctx):
+    async def hello(self, ctx: commands.Context):
         """
         Says hello there
         """
         await ctx.send('Hello there.')
 
     @commands.command()
-    async def ping(self, ctx):
+    async def ping(self, ctx: commands.Context):
         await ctx.send("Schlong")
 
     @commands.command()
-    async def joke(self, ctx, typ: Optional[str]):
+    async def joke(self, ctx: commands.Context, typ: Optional[str]):
         """
         Prints a random joke from https://jokes-and-quotes-api.herokuapp.com.
         There are three types of jokes:

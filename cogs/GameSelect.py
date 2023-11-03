@@ -23,7 +23,7 @@ class GameSelect(commands.Cog):
         self.gamelist: list[str] = read_json()
 
     @commands.command()
-    async def game(self, ctx):
+    async def game(self, ctx: discord.ext.commands.Context):
         """
         Selects a random game from a given database
         """

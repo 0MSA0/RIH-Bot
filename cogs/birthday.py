@@ -82,7 +82,7 @@ class Birthday(commands.Cog):
             await message_channel.send(bdtext)
 
     @commands.command()
-    async def add(self, ctx, username: Optional[str], date: Optional[str]):
+    async def add(self, ctx: discord.ext.commands.Context, username: Optional[str], date: Optional[str]):
         """
         Adds a Birthday and Person to database.
         Usage: !add Muster 01.01
@@ -132,7 +132,7 @@ class Birthday(commands.Cog):
         await ctx.send(output_str)
 
     @commands.command()
-    async def listbd(self, ctx):
+    async def listbd(self, ctx: discord.ext.commands.Context):
         """
         Lists and prints out all birthdays stored in the database
         """
