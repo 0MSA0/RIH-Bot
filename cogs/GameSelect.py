@@ -1,6 +1,6 @@
-
 import discord
 import json
+import random
 from discord.ext import commands
 
 # TODO: Use a database
@@ -21,6 +21,15 @@ class GameSelect(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot: commands.Bot = bot
         self.gamelist: list[str] = read_json()
+
+    @commands.command()
+    async def game(self, ctx):
+        """
+        Selects a random game from a given database
+        """
+        game: str = self.gamelist[random.randint(0, len(self.gamelist) - 1)]
+        output_str: str = "Wir spielen jetzt %s." % game
+        await ctx.send(output_str)
 
 
 async def setup(bot: commands.Bot):
