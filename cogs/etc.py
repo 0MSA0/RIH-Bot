@@ -35,6 +35,9 @@ class ETC(commands.Cog):
     @commands.command(aliases=["sh"])
     @commands.is_owner()
     async def shutdown(self, ctx: commands.Context):
+        """
+        Shuts down the bot
+        """
         print("Bot shutting down...")
         await self.bot.close()
 
@@ -47,6 +50,9 @@ class ETC(commands.Cog):
 
     @commands.command()
     async def ping(self, ctx: commands.Context):
+        """
+        Classic ping command
+        """
         await ctx.send("Schlong")
 
     @commands.command()
