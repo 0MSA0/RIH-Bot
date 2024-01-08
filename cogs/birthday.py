@@ -1,12 +1,13 @@
 import discord
 import datetime
 import json
+import sqlite3
+from sqlite3 import Error
 from typing import Optional
 from discord.ext import commands, tasks
-from random import choice
 from config import BD_CHANNEL_ID, GUILD_ID
 
-JSON_FILE = "./data/calendar.json"
+DATABASE_FILE = "./data/RIH-SQLiteDB/RIH-SQLiteDB"
 
 
 def get_position_of_sharp(text: str) -> int:
@@ -16,29 +17,53 @@ def get_position_of_sharp(text: str) -> int:
     return -1
 
 
-def read_json() -> dict:
-    """
-    Reads JSON file and saves everything into a dictionary
-    """
-    with open(JSON_FILE, 'r', encoding='utf-8') as f:
-        calendar = json.load(f)
-    print("Succesfully copied JSON into dict.")
-    return calendar
+def create_connection(db_file: str) -> sqlite3.Connection:
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file)
+    except Error as e:
+        print(e)
+    return conn
+
+
+def get_birthday_kids() -> list[str]:
+    conn: sqlite3.Connection = create_connection(DATABASE_FILE)
+    cur: sqlite3.Cursor = conn.cursor()
+    date: str = get_current_day()
+
+    query: str = "SELECT discord_name, birthday FROM person WHERE birthday LIKE '____-%s'" % date
+    cur.execute(query)
+    rows: list[str] = cur.fetchall()
+    if date == "04-01":
+        query = "SELECT discord_name FROM person ORDER BY random() LIMIT 1;"
+        cur.execute(query)
+        rows += cur.fetchone()
+    return rows
+
+
+def get_current_day() -> str:
+    date: datetime.date = datetime.date.today()
+    return date.strftime("%m-%d")
+
+
+def calc_age(birthday: datetime.date) -> str:
+    age = datetime.date.today().year - birthday.year
+    match (age % 10):
+        case 1:
+            return "%dst" % age
+        case 2:
+            return "%dnd" % age
+        case 3:
+            return "%drd" % age
+        case _:
+            return "%dth" % age
 
 
 class Birthday(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot: commands.Bot = bot
         self.bd_channel_id: int = BD_CHANNEL_ID
-        self.calendar: dict = read_json()
         self.bd_check_task.start()
-
-    def add_to_json(self):
-        """
-        Writes all changes in calendar-dictionary to JSON file
-        """
-        with open(JSON_FILE, 'w', encoding='UTF8') as jf:
-            json.dump(self.calendar, jf, indent=2)
 
     @tasks.loop(hours=24)
     async def bd_check_task(self):
@@ -46,24 +71,13 @@ class Birthday(commands.Cog):
         # Get channel & server
         message_channel = self.bot.get_channel(self.bd_channel_id)
         server = self.bot.get_guild(GUILD_ID)
-        # Get current date
-        current_date = datetime.datetime.now()
-        day = current_date.strftime("%d").strip("0")
-        month = current_date.strftime("%m")
-        if month != "10":
-            month = month.strip("0")
-        current_date = day + "." + month
-        # query the dict
-        bdkinder = self.calendar[current_date]
-        if current_date == "1.4":
-            # Aprils fool
-            ncal = [self.calendar[bdkind] for bdkind in self.calendar if (self.calendar[bdkind] != [])]
-            rdm_kid = choice(ncal)
-            bdkinder += rdm_kid
+        # Get birthday kiddos
+        bdkinder: list[str] = get_birthday_kids()
         if bdkinder != []:
             bdtext = ""
-            for person in bdkinder:
+            for person, birthday in bdkinder:
                 sharp = get_position_of_sharp(person)
+                age = calc_age(datetime.date.fromisoformat(birthday))
                 if sharp != -1:
                     # Old naming system compatability
                     personname = person[:sharp]
@@ -75,72 +89,35 @@ class Birthday(commands.Cog):
                     # new naming system
                     user_id = server.get_member_named(person)
                 if person == "doribumi":
-                    bdtext += "%s lemao congrats lelul\n" % user_id.mention
+                    for i in range(int(age[:-2])):
+                        bdtext += "%s lemao congrats lelul\n" % user_id.mention
                 else:
-                    bdtext += "Happy Birthday %s. @everyone" % user_id.mention
+                    bdtext += "Happy %s Birthday %s. @everyone" % (age, user_id.mention)
                     bdtext += ":partying_face: :partying_face: \n"
             await message_channel.send(bdtext)
-
-    @commands.command()
-    async def add(self, ctx: discord.ext.commands.Context, username: Optional[str], date: Optional[str]):
-        """
-        Adds a Birthday and Person to database.
-        Usage: !add Muster 01.01
-        Zeroes must be written out!
-        """
-        if username is None or date is None:
-            output_str = "Failed to add person. Usage: `!add Muster 01.01`"
-        else:
-            if len(date) != 5 or len(username) == 0 or date[2] != '.':
-                output_str = "Failed to add person. Usage: `!add Muster 01.01`"
-            else:
-                try:
-                    int(date[0:2])
-                    int(date[3:5])
-                except ValueError:
-                    output_str = "Please enter a valid date!"
-                else:
-                    # formatting date-string so it fits the dict
-                    month = str(int(date[3:5]))
-                    day = str(int(date[:2]))
-                    date = day + "."
-                    date += month
-                    # add user to dict
-
-                    sharp = get_position_of_sharp(username)
-                    if sharp != -1:
-
-                        personname = username[:sharp]
-                        persondiscriminator = username[sharp + 1:]
-
-                        user_id = discord.utils.get(self.bot.get_all_members(),
-                                                    name=personname,
-                                                    discriminator=persondiscriminator)
-                    else:
-                        user_id = discord.utils.get(self.bot.get_all_members(),
-                                                    global_name=username)
-                    if user_id is not None:
-
-                        if len(self.calendar[date]) > 0:
-                            self.calendar[date] += [username]
-                        else:
-                            self.calendar[date] = [username]
-                        self.add_to_json()
-                        output_str = "%s successfully added to database." % (username)
-                    else:
-                        output_str = "User not found. Check for typos."
-        await ctx.send(output_str)
 
     @commands.command()
     async def listbd(self, ctx: discord.ext.commands.Context):
         """
         Lists and prints out all birthdays stored in the database
         """
+        special_format_months = ["March", "June", "April", "July", "August", "May"]
         output = ""
-        for pair in self.calendar.items():
-            if pair[1] != ['']:
-                for value in pair[1]:
-                    output += "%s: %s\n" % (pair[0], value)
+        conn = create_connection(DATABASE_FILE)
+        cursor = conn.cursor()
+        query = "SELECT person_name, birthday FROM person ORDER BY substr(birthday, 6, 5)"
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        for person, date in rows:
+            if date != "YYYY-MM-DD":
+                date = datetime.date.fromisoformat(date)
+                day = date.strftime("%d")
+                day = day.lstrip('0').rjust(len(day))
+                month = date.strftime("%B")
+                output += "%s. %s " % (day, month)
+                if month in special_format_months:
+                    output += "\t"
+                output += "\t %s\n" % person
         await ctx.send(output)
 
 
