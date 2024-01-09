@@ -48,15 +48,15 @@ def get_current_day() -> str:
 
 def calc_age(birthday: datetime.date) -> str:
     age = datetime.date.today().year - birthday.year
-    match (age % 10):
-        case 1:
-            return "%dst" % age
-        case 2:
-            return "%dnd" % age
-        case 3:
-            return "%drd" % age
-        case _:
-            return "%dth" % age
+    var = age % 10
+    if var == 1:
+        return "%dst" % age
+    elif var == 2:
+        return "%dnd" % age
+    elif var == 3:
+        return "%drd" % age
+    else:
+        return "%dth" % age
 
 
 class Birthday(commands.Cog):
