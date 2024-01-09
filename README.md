@@ -5,7 +5,6 @@ Außerdem noch das "Wer hat das gesagt?" Minispiel mit Zitaten aus der Wand der 
 
 ## TODO
 ### Einfach
-- SQLite DB benutzen anstatt JSON Dateien
 - Restliche Zitate in DB machen (2022 & 2023)
 - Kommand für Zitat hinzufügen implementieren. Vielleicht nur als Owner nutzbar.
 ### Moderat:
@@ -15,3 +14,5 @@ Außerdem noch das "Wer hat das gesagt?" Minispiel mit Zitaten aus der Wand der 
 - Fancy UI für GameSelect
 - "Abgleich wer alles mitspielen will und wer welche games hat, so das falls samuel mitmachen will automatisch ow rauskommt (auf korrekt)"
 
+## FAQ
+- Wenn wieder irgendein dependency Error wegen SQLite kommt, dann musst du libsqlite3-dev installieren und python3.9 neuinstallieren (pyenv install 3.9)
