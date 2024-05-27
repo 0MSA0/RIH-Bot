@@ -1,3 +1,4 @@
 config.py
 discord.log
 __pycache__/
+data/RIH-SQLiteDB/*
