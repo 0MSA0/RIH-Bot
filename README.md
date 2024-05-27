@@ -5,11 +5,10 @@ Außerdem noch das "Wer hat das gesagt?" Minispiel mit Zitaten aus der Wand der 
 
 ## TODO
 ### Einfach
-- Restliche Zitate in DB machen (2022 & 2023)
 - Kommand für Zitat hinzufügen implementieren. Vielleicht nur als Owner nutzbar.
 ### Moderat:
 - "Vetos für games auf die man garkein bock hat"
-- Rewrite in Rust Serenity
+- Rewrite in C++ with libD++
 ### Schwer:
 - Fancy UI für GameSelect
 - "Abgleich wer alles mitspielen will und wer welche games hat, so das falls samuel mitmachen will automatisch ow rauskommt (auf korrekt)"
